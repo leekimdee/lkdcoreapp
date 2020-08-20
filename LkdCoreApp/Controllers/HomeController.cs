@@ -12,6 +12,7 @@ namespace LkdCoreApp.Controllers
     {
         public IActionResult Index()
         {
+            //Your code here
             return View();
         }
 
