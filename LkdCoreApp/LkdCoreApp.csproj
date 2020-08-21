@@ -12,4 +12,13 @@
     <PackageReference Include="Microsoft.AspNetCore.Razor.Design" Version="2.2.0" PrivateAssets="All" />
   </ItemGroup>
 
+
+  <ItemGroup>
+    <ProjectReference Include="..\LkdCoreApp.Application\LkdCoreApp.Application.csproj" />
+    <ProjectReference Include="..\LkdCoreApp.Data.EF\LkdCoreApp.Data.EF.csproj" />
+    <ProjectReference Include="..\LkdCoreApp.Data\LkdCoreApp.Data.csproj" />
+    <ProjectReference Include="..\LkdCoreApp.Infrastructure\LkdCoreApp.Infrastructure.csproj" />
+    <ProjectReference Include="..\LkdCoreApp.Utilities\LkdCoreApp.Utilities.csproj" />
+  </ItemGroup>
+
 </Project>
