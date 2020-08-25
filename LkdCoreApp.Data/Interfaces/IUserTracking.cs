@@ -4,10 +4,9 @@ using System.Text;
 
 namespace LkdCoreApp.Data.Interfaces
 {
-    public interface IDateTracking
+    public interface IUserTracking<T>
     {
-        DateTime CreatedDate { set; get; }
-
-        DateTime ModifiedDate { set; get; }
+        T CreatedBy { get; set; }
+        T ModifiedBy { get; set; }
     }
 }
