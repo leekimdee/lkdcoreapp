@@ -13,6 +13,9 @@ using Microsoft.EntityFrameworkCore;
 using LkdCoreApp.Data;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using LkdCoreApp.Data.EF;
+using LkdCoreApp.Data.Entities;
+using Microsoft.AspNetCore.Identity.UI.Services;
 
 namespace LkdCoreApp
 {
@@ -35,18 +38,40 @@ namespace LkdCoreApp
                 options.MinimumSameSitePolicy = SameSiteMode.None;
             });
 
-            services.AddDbContext<ApplicationDbContext>(options =>
+            services.AddDbContext<AppDbContext>(options =>
                 options.UseSqlServer(
-                    Configuration.GetConnectionString("DefaultConnection")));
-            services.AddDefaultIdentity<IdentityUser>()
-                .AddDefaultUI(UIFramework.Bootstrap4)
-                .AddEntityFrameworkStores<ApplicationDbContext>();
+                    Configuration.GetConnectionString("DefaultConnection"), 
+                    o => o.MigrationsAssembly("LkdCoreApp.Data.EF")));
+
+            services.AddIdentity<AppUser, AppRole>()
+                .AddEntityFrameworkStores<AppDbContext>()
+                .AddDefaultTokenProviders();
+
+            //services.AddDefaultIdentity<AppUser, AppRole>()
+            //    .AddDefaultUI(UIFramework.Bootstrap4)
+            //    .AddEntityFrameworkStores<ApplicationDbContext>();
+
+
+            // Add application services.
+            services.AddScoped<UserManager<AppUser>, UserManager<AppUser>>();
+            services.AddScoped<RoleManager<AppRole>, RoleManager<AppRole>>();
+
+            //services.AddSingleton(Mapper.Configuration);
+            //services.AddScoped<IMapper>(sp => new Mapper(sp.GetRequiredService<AutoMapper.IConfigurationProvider>(), sp.GetService));
+
+            services.AddTransient<IEmailSender, IEmailSender>();
+            services.AddTransient<DbInitializer>();
+
+            //services.AddTransient<IProductCategoryRepository, ProductCategoryRepository>();
+
+            //services.AddTransient<IProductCategoryService, ProductCategoryService>();
+
 
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IHostingEnvironment env)
+        public void Configure(IApplicationBuilder app, IHostingEnvironment env, DbInitializer dbInitializer)
         {
             if (env.IsDevelopment())
             {
@@ -72,6 +97,8 @@ namespace LkdCoreApp
                     name: "default",
                     template: "{controller=Home}/{action=Index}/{id?}");
             });
+
+            dbInitializer.Seed().Wait();
         }
     }
 }

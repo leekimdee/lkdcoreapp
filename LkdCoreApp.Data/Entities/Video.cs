@@ -2,6 +2,7 @@
 using LkdCoreApp.Data.Interfaces;
 using LkdCoreApp.Infrastructure.SharedKernel;
 using System;
+using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 
 namespace LkdCoreApp.Data.Entities
@@ -16,6 +17,7 @@ namespace LkdCoreApp.Data.Entities
 
         public Status Status { get; set; }
 
+        [DefaultValue(false)]
         public bool IsDeleted { get; set; }
 
         public DateTime CreatedDate { get; set; }

@@ -3,6 +3,7 @@ using LkdCoreApp.Data.Interfaces;
 using LkdCoreApp.Infrastructure.SharedKernel;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 
 namespace LkdCoreApp.Data.Entities
@@ -20,6 +21,7 @@ namespace LkdCoreApp.Data.Entities
 
         public int SortOrder { get; set; }
 
+        [DefaultValue(false)]
         public bool IsDeleted { get; set; }
 
         public Status Status { get; set; }
