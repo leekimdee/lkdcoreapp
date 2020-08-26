@@ -16,6 +16,11 @@ using Microsoft.Extensions.DependencyInjection;
 using LkdCoreApp.Data.EF;
 using LkdCoreApp.Data.Entities;
 using Microsoft.AspNetCore.Identity.UI.Services;
+using AutoMapper;
+using LkdCoreApp.Data.IRepositories;
+using LkdCoreApp.Data.EF.Respositories;
+using LkdCoreApp.Application.Interfaces;
+using LkdCoreApp.Application.Implementations;
 
 namespace LkdCoreApp
 {
@@ -57,14 +62,14 @@ namespace LkdCoreApp
             services.AddScoped<RoleManager<AppRole>, RoleManager<AppRole>>();
 
             //services.AddSingleton(Mapper.Configuration);
-            //services.AddScoped<IMapper>(sp => new Mapper(sp.GetRequiredService<AutoMapper.IConfigurationProvider>(), sp.GetService));
+            services.AddScoped<IMapper>(sp => new Mapper(sp.GetRequiredService<AutoMapper.IConfigurationProvider>(), sp.GetService));
 
             services.AddTransient<IEmailSender, IEmailSender>();
             services.AddTransient<DbInitializer>();
 
-            //services.AddTransient<IProductCategoryRepository, ProductCategoryRepository>();
+            services.AddTransient<IImageAlbumRepository, ImageAlbumRepository>();
 
-            //services.AddTransient<IProductCategoryService, ProductCategoryService>();
+            services.AddTransient<IImageAlbumService, ImageAlbumService>();
 
 
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);

@@ -15,6 +15,12 @@ namespace LkdCoreApp.Data.Entities
             Images = new List<Image>();
         }
 
+        public ImageAlbum(string title, int sortOrder)
+        {
+            Title = title;
+            SortOrder = sortOrder;
+        }
+
         [StringLength(255)]
         [Required]
         public string Title { get; set; }
