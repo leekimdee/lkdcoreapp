@@ -1,26 +1,20 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using AutoMapper;
+using LkdCoreApp.Application.Implementations;
+using LkdCoreApp.Application.Interfaces;
+using LkdCoreApp.Data.EF;
+using LkdCoreApp.Data.EF.Respositories;
+using LkdCoreApp.Data.Entities;
+using LkdCoreApp.Data.IRepositories;
+using LkdCoreApp.Services;
 using Microsoft.AspNetCore.Builder;
-using Microsoft.AspNetCore.Identity;
-using Microsoft.AspNetCore.Identity.UI;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.HttpsPolicy;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using LkdCoreApp.Data;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using LkdCoreApp.Data.EF;
-using LkdCoreApp.Data.Entities;
-using Microsoft.AspNetCore.Identity.UI.Services;
-using AutoMapper;
-using LkdCoreApp.Data.IRepositories;
-using LkdCoreApp.Data.EF.Respositories;
-using LkdCoreApp.Application.Interfaces;
-using LkdCoreApp.Application.Implementations;
+using System;
 
 namespace LkdCoreApp
 {
@@ -45,7 +39,7 @@ namespace LkdCoreApp
 
             services.AddDbContext<AppDbContext>(options =>
                 options.UseSqlServer(
-                    Configuration.GetConnectionString("DefaultConnection"), 
+                    Configuration.GetConnectionString("DefaultConnection"),
                     o => o.MigrationsAssembly("LkdCoreApp.Data.EF")));
 
             services.AddIdentity<AppUser, AppRole>()
@@ -56,7 +50,25 @@ namespace LkdCoreApp
             //    .AddDefaultUI(UIFramework.Bootstrap4)
             //    .AddEntityFrameworkStores<ApplicationDbContext>();
 
+            // Configure Identity
+            services.Configure<IdentityOptions>(options =>
+            {
+                // Password settings
+                options.Password.RequireDigit = true;
+                options.Password.RequiredLength = 6;
+                options.Password.RequireNonAlphanumeric = false;
+                options.Password.RequireUppercase = false;
+                options.Password.RequireLowercase = false;
 
+                // Lockout settings
+                options.Lockout.DefaultLockoutTimeSpan = TimeSpan.FromMinutes(30);
+                options.Lockout.MaxFailedAccessAttempts = 10;
+
+                // User settings
+                options.User.RequireUniqueEmail = true;
+            });
+
+            services.AddAutoMapper();
             // Add application services.
             services.AddScoped<UserManager<AppUser>, UserManager<AppUser>>();
             services.AddScoped<RoleManager<AppRole>, RoleManager<AppRole>>();
@@ -64,19 +76,18 @@ namespace LkdCoreApp
             services.AddSingleton(Mapper.Configuration);
             services.AddScoped<IMapper>(sp => new Mapper(sp.GetRequiredService<AutoMapper.IConfigurationProvider>(), sp.GetService));
 
-            services.AddTransient<IEmailSender, IEmailSender>();
+            services.AddTransient<IEmailSender, EmailSender>();
             services.AddTransient<DbInitializer>();
 
             services.AddTransient<IImageAlbumRepository, ImageAlbumRepository>();
 
             services.AddTransient<IImageAlbumService, ImageAlbumService>();
 
-
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IHostingEnvironment env, DbInitializer dbInitializer)
+        public void Configure(IApplicationBuilder app, IHostingEnvironment env)
         {
             if (env.IsDevelopment())
             {
@@ -102,8 +113,6 @@ namespace LkdCoreApp
                     name: "default",
                     template: "{controller=Home}/{action=Index}/{id?}");
             });
-
-            dbInitializer.Seed().Wait();
         }
     }
 }

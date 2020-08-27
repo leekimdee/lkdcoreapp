@@ -114,6 +114,7 @@ namespace LkdCoreApp.Data.EF
                     }
                 };
                 _context.ImageAlbums.AddRange(listImageAlbum);
+                _context.SaveChanges();
             }
 
             if (_context.Videos.Count() == 0)
@@ -126,6 +127,7 @@ namespace LkdCoreApp.Data.EF
                     new Video(){Title = "Planet Earth: Amazing nature scenery", VideoUrl = "https://www.youtube.com/watch?v=6v2L2UGZJAM", Status = Status.Active},
                     new Video(){Title = "Nature and life", VideoUrl = "https://www.youtube.com/watch?v=IFitUvw6BtI", Status = Status.Active}
                 });
+                _context.SaveChanges();
             }
 
             //if (!_context.SystemConfigs.Any(x => x.Id == "HomeTitle"))

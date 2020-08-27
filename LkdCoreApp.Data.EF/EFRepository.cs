@@ -5,7 +5,6 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
-using System.Text;
 
 namespace LkdCoreApp.Data.EF
 {
@@ -17,6 +16,7 @@ namespace LkdCoreApp.Data.EF
         {
             _context = context;
         }
+
         public void Add(T entity)
         {
             _context.Add(entity);
