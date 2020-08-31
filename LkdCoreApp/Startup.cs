@@ -5,6 +5,7 @@ using LkdCoreApp.Data.EF;
 using LkdCoreApp.Data.EF.Respositories;
 using LkdCoreApp.Data.Entities;
 using LkdCoreApp.Data.IRepositories;
+using LkdCoreApp.Infrastructure.Interfaces;
 using LkdCoreApp.Services;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -14,6 +15,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Newtonsoft.Json.Serialization;
 using System;
 
 namespace LkdCoreApp
@@ -77,7 +79,10 @@ namespace LkdCoreApp
             services.AddScoped<IMapper>(sp => new Mapper(sp.GetRequiredService<AutoMapper.IConfigurationProvider>(), sp.GetService));
 
             services.AddTransient<IEmailSender, EmailSender>();
+            services.AddTransient<IUnitOfWork, EFUnitOfWork>();
             services.AddTransient<DbInitializer>();
+
+            services.AddMvc().AddJsonOptions(options => options.SerializerSettings.ContractResolver = new DefaultContractResolver());
 
             services.AddTransient<IImageAlbumRepository, ImageAlbumRepository>();
 

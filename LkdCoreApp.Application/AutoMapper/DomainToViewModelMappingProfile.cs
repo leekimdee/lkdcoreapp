@@ -9,6 +9,8 @@ namespace LkdCoreApp.Application.AutoMapper
         public DomainToViewModelMappingProfile()
         {
             CreateMap<ImageAlbum, ImageAlbumViewModel>();
+            CreateMap<Image, ImageViewModel>();
+            CreateMap<Video, VideoViewModel>();
         }
     }
 }

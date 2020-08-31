@@ -9,7 +9,7 @@ namespace LkdCoreApp.Application.AutoMapper
         public ViewModelToDomainMappingProfile()
         {
             CreateMap<ImageAlbumViewModel, ImageAlbum>()
-                .ConstructUsing(i => new ImageAlbum(i.Title, i.SortOrder));
+                .ConstructUsing(i => new ImageAlbum(i.Title, i.SortOrder, i.Status));
         }
     }
 }

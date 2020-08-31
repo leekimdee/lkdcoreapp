@@ -15,10 +15,11 @@ namespace LkdCoreApp.Data.Entities
             Images = new List<Image>();
         }
 
-        public ImageAlbum(string title, int sortOrder)
+        public ImageAlbum(string title, int sortOrder, Status status)
         {
             Title = title;
             SortOrder = sortOrder;
+            Status = status;
         }
 
         [StringLength(255)]

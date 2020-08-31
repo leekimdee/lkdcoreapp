@@ -3,8 +3,10 @@ using AutoMapper.QueryableExtensions;
 using LkdCoreApp.Application.Interfaces;
 using LkdCoreApp.Application.ViewModels;
 using LkdCoreApp.Data.Entities;
+using LkdCoreApp.Data.Enums;
 using LkdCoreApp.Data.IRepositories;
 using LkdCoreApp.Infrastructure.Interfaces;
+using LkdCoreApp.Utilities.Dtos;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -34,6 +36,11 @@ namespace LkdCoreApp.Application.Implementations
             _imageAlbumRepository.Remove(id);
         }
 
+        public void Dispose()
+        {
+            GC.SuppressFinalize(this);
+        }
+
         public List<ImageAlbumViewModel> GetAll()
         {
             return _imageAlbumRepository.FindAll().OrderBy(x => x.Id)
@@ -49,6 +56,29 @@ namespace LkdCoreApp.Application.Implementations
                 return _imageAlbumRepository.FindAll().OrderBy(x => x.Id)
                     .ProjectTo<ImageAlbumViewModel>()
                     .ToList();
+        }
+
+        public PagedResult<ImageAlbumViewModel> GetAllPaging(string keyword, int page, int pageSize)
+        {
+            var query = _imageAlbumRepository.FindAll(x => x.Status == Status.Active);
+            if (!string.IsNullOrEmpty(keyword))
+                query = query.Where(x => x.Title.Contains(keyword));
+
+            int totalRow = query.Count();
+
+            query = query.OrderByDescending(x => x.CreatedDate)
+                .Skip((page - 1) * pageSize).Take(pageSize);
+
+            var data = query.ProjectTo<ImageAlbumViewModel>().ToList();
+
+            var paginationSet = new PagedResult<ImageAlbumViewModel>()
+            {
+                Results = data,
+                CurrentPage = page,
+                RowCount = totalRow,
+                PageSize = pageSize
+            };
+            return paginationSet;
         }
 
         public ImageAlbumViewModel GetById(int id)

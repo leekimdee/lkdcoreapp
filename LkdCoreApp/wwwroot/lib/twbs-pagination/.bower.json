@@ -1,0 +1,13 @@
+{
+  "name": "twbs-pagination",
+  "homepage": "https://github.com/esimakin/twbs-pagination",
+  "_release": "4888c09f21",
+  "_resolution": {
+    "type": "branch",
+    "branch": "master",
+    "commit": "4888c09f216fc66aa996646c89ccb88e4450f077"
+  },
+  "_source": "https://github.com/esimakin/twbs-pagination.git",
+  "_target": "*",
+  "_originalSource": "twbs-pagination"
+}
