@@ -1,4 +1,5 @@
 ﻿using LkdCoreApp.Application.ViewModels;
+using LkdCoreApp.Utilities.Dtos;
 using System.Collections.Generic;
 
 namespace LkdCoreApp.Application.Interfaces
@@ -14,6 +15,8 @@ namespace LkdCoreApp.Application.Interfaces
         List<ImageViewModel> GetAll();
 
         List<ImageViewModel> GetAll(string keyword);
+
+        PagedResult<ImageViewModel> GetAllPaging(string keyword, int page, int pageSize);
 
         ImageViewModel GetById(int id);
 

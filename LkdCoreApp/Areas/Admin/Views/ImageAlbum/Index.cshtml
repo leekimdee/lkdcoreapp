@@ -31,13 +31,17 @@
                 <!-- /.box-header -->
                 <div class="box-body">
                     <table class="table table-bordered" id="tbl-list">
-                        <tr>
-                            <th style="width: 100px">#</th>
-                            <th>Tiêu đề</th>
-                            <th>Thứ tự</th>
-                            <th style="width: 40px">Trạng thái</th>
-                        </tr>
+                        <thead>
+                            <tr>
+                                <th style="width: 100px">#</th>
+                                <th>Tiêu đề</th>
+                                <th>Thứ tự</th>
+                                <th style="width: 40px">Trạng thái</th>
+                            </tr>
+                        </thead>
+                        <tbody id="tbl-content">
 
+                        </tbody>
                     </table>
                 </div>
                 <!-- /.box-body -->
@@ -55,7 +59,7 @@
                     <div class="col-sm-5">
                         <div class="dataTables_info" id="datatable-checkbox_info" role="status" aria-live="polite">
                             <select id="ddlShowPage">
-                                <option value="10" selected="selected">1</option>
+                                <option value="10" selected="selected">10</option>
                                 <option value="20">20</option>
                                 <option value="30">30</option>
                                 <option value="50">50</option>

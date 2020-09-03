@@ -85,8 +85,10 @@ namespace LkdCoreApp
             services.AddMvc().AddJsonOptions(options => options.SerializerSettings.ContractResolver = new DefaultContractResolver());
 
             services.AddTransient<IImageAlbumRepository, ImageAlbumRepository>();
+            services.AddTransient<IImageRepository, ImageRepository>();
 
             services.AddTransient<IImageAlbumService, ImageAlbumService>();
+            services.AddTransient<IImageService, ImageService>();
 
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
         }

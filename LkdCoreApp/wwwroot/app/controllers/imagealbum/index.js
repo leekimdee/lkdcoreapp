@@ -27,8 +27,7 @@
             url: '/admin/imagealbum/GetAllPaging',
             dataType: 'json',
             success: function (response) {
-                $.each(response, function (i, item) {
-                    //console.log(item);
+                $.each(response.Results, function (i, item) {
                     render += Mustache.render(template, {
                         Id: item.Id,
                         Title: item.Title,
@@ -36,17 +35,17 @@
                         //CreatedDate: tedu.dateTimeFormatJson(item.DateCreated),
                         Status: lkd.getStatus(item.Status)
                     });
-                    $('#lblTotalRecords').text(response.RowCount);
-                    
-                    if (render != '') {
-                        $('#tbl-list').append(render);
-                    }
-
-                    wrapPaging(response.RowCount, function () {
-                        loadData();
-                    }, isPageChanged);
                 });
-                
+
+                $('#lblTotalRecords').text(response.RowCount);
+
+                if (render != '') {
+                    $('#tbl-content').html(render);
+                }
+
+                wrapPaging(response.RowCount, function () {
+                    loadData();
+                }, isPageChanged);
             },
             error: function (status) {
                 console.log(status);

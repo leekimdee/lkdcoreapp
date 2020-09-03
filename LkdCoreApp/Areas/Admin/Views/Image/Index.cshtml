@@ -1,10 +1,85 @@
-﻿<!DOCTYPE html>
+﻿@{
+    ViewData["Title"] = "Index";
+}
+@section Scripts{
+    <script src="~/app/controllers/image/index.js"></script>
+    <script>
+        var image = new imageController();
+        image.initialize();
+    </script>
+}
+<!-- Content Header (Page header) -->
+<section class="content-header">
+    <h1>
+        Hình ảnh
+        <small>Danh sách</small>
+    </h1>
+    <ol class="breadcrumb">
+        <li><a href="#"><i class="fa fa-dashboard"></i> Trang chủ</a></li>
+        <li class="active">Danh sách hình ảnh</li>
+    </ol>
+</section>
 
-<html>
-<head>
-    <meta name="viewport" content="width=device-width" />
-    <title>Index</title>
-</head>
-<body>
-</body>
-</html>
+<!-- Main content -->
+<section class="content">
+    <div class="row">
+        <div class="col-md-12">
+            <div class="box">
+                <div class="box-header with-border">
+                    <h3 class="box-title">Tất cả hình</h3>
+                </div>
+                <!-- /.box-header -->
+                <div class="box-body">
+                    <table class="table table-bordered" id="tbl-list">
+                        <thead>
+                            <tr>
+                                <th style="width: 100px">#</th>
+                                <th>Tiêu đề</th>
+                                <th>Đường dẫn ảnh</th>
+                                <th>Album</th>
+                                <th style="width: 100px">Trạng thái</th>
+                            </tr>
+                        </thead>
+                        <tbody id="tbl-content"></tbody>
+                    </table>
+                </div>
+                <!-- /.box-body -->
+                <!--Pagination-->
+                <div class="row">
+                    <div class="col-sm-5">
+                        <div class="dataTables_info" id="datatable-checkbox_info" role="status" aria-live="polite">
+                            <select id="ddlShowPage">
+                                <option value="10" selected="selected">10</option>
+                                <option value="20">20</option>
+                                <option value="30">30</option>
+                                <option value="50">50</option>
+                            </select>
+                            <span class="item-per-page">
+                                bản ghi/trang.
+                            </span>
+                            Tổng số bản ghi: <strong id="lblTotalRecords"></strong>
+                        </div>
+                    </div><div class="col-sm-7">
+                        <div class="dataTables_paginate paging_simple_numbers" id="datatable-checkbox_paginate">
+                            <ul id="paginationUL"></ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<!-- /.content -->
+<script id="table-template" type="x-tmpl-mustache">
+    <tr>
+        <th scope="row">
+            <button class="btn btn-default btn-sm btn-edit" data-id="{{Id}}"><i class="fa fa-pencil"></i></button>
+            <button class="btn btn-danger btn-sm btn-delete" data-id="{{Id}}"><i class="fa fa-trash"></i></button>
+        </th>
+        <td>{{Title}}</td>
+        <td>{{ImageUrl}}</td>
+        <td>{{AlbumId}}</td>
+        <td>{{{Status}}}</td>
+    </tr>
+</script>
+@Html.Partial("_AddEditModal.cshtml")

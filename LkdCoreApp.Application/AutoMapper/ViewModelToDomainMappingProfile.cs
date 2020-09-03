@@ -10,6 +10,9 @@ namespace LkdCoreApp.Application.AutoMapper
         {
             CreateMap<ImageAlbumViewModel, ImageAlbum>()
                 .ConstructUsing(i => new ImageAlbum(i.Title, i.SortOrder, i.Status));
+
+            CreateMap<ImageViewModel, Image>()
+                .ConstructUsing(i => new Image(i.Title, i.ImageUrl, i.ImageAlbumId, i.Status));
         }
     }
 }
