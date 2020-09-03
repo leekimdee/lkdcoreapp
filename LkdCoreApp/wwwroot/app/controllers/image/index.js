@@ -27,6 +27,41 @@
             loadData(true);
         });
 
+        $("#btnCreate").on('click', function () {
+            resetFormMaintainance();
+            //initTreeDropDownCategory();
+            $('#modal-add-edit').modal('show');
+
+        });
+
+        $('#btnSelectImg').on('click', function () {
+            $('#fileInputImage').click();
+        });
+
+        $("#fileInputImage").on('change', function () {
+            var fileUpload = $(this).get(0);
+            var files = fileUpload.files;
+            var data = new FormData();
+            for (var i = 0; i < files.length; i++) {
+                data.append(files[i].name, files[i]);
+            }
+            $.ajax({
+                type: "POST",
+                url: "/Admin/Upload/UploadImage",
+                contentType: false,
+                processData: false,
+                data: data,
+                success: function (path) {
+                    $('#txtImage').val(path);
+                    lkd.notify('Upload image succesful!', 'success');
+
+                },
+                error: function () {
+                    lkd.notify('There was error uploading files!', 'error');
+                }
+            });
+        });
+
         $('body').on('click', '.btn-edit', function (e) {
             e.preventDefault();
             var that = $(this).data('id');
@@ -44,7 +79,7 @@
                     $('#txtTitleM').val(data.Title);
                     loadAlbums(data.ImageAlbumId);
 
-                    // $('#txtImageM').val(data.ThumbnailImage);
+                    $('#txtImage').val(data.ImageUrl);
 
                     $('#ckStatusM').prop('checked', data.Status == 1);
 
@@ -84,6 +119,16 @@
                 //}
             }
         });
+    }
+
+    function resetFormMaintainance() {
+        $('#hidIdM').val(0);
+        $('#txtTitleM').val('');
+        loadAlbums('');
+
+        $('#txtImage').val('');
+
+        $('#ckStatusM').prop('checked', true);
     }
 
     function loadAlbums(selectedId) {
