@@ -88,7 +88,8 @@ namespace LkdCoreApp.Application.Implementations
 
         public void Update(ImageViewModel imageVm)
         {
-            throw new NotImplementedException();
+            var image = Mapper.Map<ImageViewModel, Image>(imageVm);
+            _imageRepository.Update(image);
         }
     }
 }

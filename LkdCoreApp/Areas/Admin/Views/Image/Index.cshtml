@@ -28,12 +28,13 @@
                 <div class="box-header with-border">
                     <h3 class="box-title">Tất cả hình</h3>
                     <div class="box-tools">
-                        <div class="input-group input-group-sm hidden-xs">
-                            <button id="btnCreate" class="btn btn-default"><i class="fa fa-plus"></i>Thêm mới</button>
-                        </div>
+                        @*<div class="input-group input-group-sm hidden-xs">
+                            </div>*@
+                        <button id="btnCreate" class="btn btn-default"><i class="fa fa-plus"></i>Thêm mới</button>
+                        <button id="btnCreateMulti" class="btn btn-success"><i class="fa fa-plus-circle"></i>Thêm nhiều ảnh</button>
                     </div>
                 </div>
-                
+
                 <!-- /.box-header -->
                 <div class="box-body">
                     <table class="table table-bordered" id="tbl-list">
@@ -43,6 +44,7 @@
                                 <th>Tiêu đề</th>
                                 <th>Đường dẫn ảnh</th>
                                 <th>Album</th>
+                                <th>Ngày tạo</th>
                                 <th style="width: 100px">Trạng thái</th>
                             </tr>
                         </thead>
@@ -51,26 +53,33 @@
                 </div>
                 <!-- /.box-body -->
                 <!--Pagination-->
-                <div class="row">
-                    <div class="col-sm-5">
-                        <div class="dataTables_info" id="datatable-checkbox_info" role="status" aria-live="polite">
-                            <select id="ddlShowPage">
-                                <option value="10" selected="selected">10</option>
-                                <option value="20">20</option>
-                                <option value="30">30</option>
-                                <option value="50">50</option>
-                            </select>
-                            <span class="item-per-page">
-                                bản ghi/trang.
-                            </span>
-                            Tổng số bản ghi: <strong id="lblTotalRecords"></strong>
-                        </div>
-                    </div><div class="col-sm-7">
-                        <div class="dataTables_paginate paging_simple_numbers" id="datatable-checkbox_paginate">
-                            <ul id="paginationUL"></ul>
-                        </div>
-                    </div>
+                <div class="box-footer">
+                    <select id="ddlShowPage" class="form-control-sm">
+                        <option value="10" selected="selected">10</option>
+                        <option value="20">20</option>
+                        <option value="30">30</option>
+                        <option value="50">50</option>
+                    </select>
+                    <span class="item-per-page">
+                        bản ghi/trang.
+                    </span>
+                    Tổng số bản ghi: <strong id="lblTotalRecords"></strong>
+                    @*<div class="dataTables_info" id="datatable-checkbox_info" role="status" aria-live="polite">
+
+                    </div>*@
+                    <ul id="paginationUL" class="pagination pagination-sm no-margin pull-right"></ul>
+                    @*<div class="dataTables_paginate paging_simple_numbers pull-right" id="datatable-checkbox_paginate">
+
+                    </div>*@
                 </div>
+                @*<div class="row">
+                    <div class="col-sm-5">
+                        
+                    </div>
+                    <div class="col-sm-7">
+                        
+                    </div>
+                </div>*@
             </div>
         </div>
     </div>
@@ -85,7 +94,9 @@
         <td>{{Title}}</td>
         <td>{{ImageUrl}}</td>
         <td>{{AlbumId}}</td>
+        <td>{{CreatedDate}}</td>
         <td>{{{Status}}}</td>
     </tr>
 </script>
 @Html.Partial("_AddEditModal.cshtml")
+@Html.Partial("_AddMultiModal.cshtml")

@@ -20,6 +20,7 @@
     "mustache": "~4.0.1",
     "notifyjs": "~0.4.2",
     "jquery-validation": "1.14.0",
-    "jquery-validation-unobtrusive": "3.2.6"
+    "jquery-validation-unobtrusive": "3.2.6",
+    "bootbox": "~5.4.0"
   }
 }

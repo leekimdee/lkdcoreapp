@@ -6,19 +6,30 @@
 
     function registerEvents() {
         //Init validation
-        //$('#frmMaintainance').validate({
-        //    errorClass: 'red',
-        //    ignore: [],
-        //    //lang: 'vi',
-        //    rules: {
-        //        txtNameM: { required: true },
-        //        ddlCategoryIdM: { required: true },
-        //        txtPriceM: {
-        //            required: true,
-        //            number: true
-        //        }
-        //    }
-        //});
+        $('#frmMaintainance').validate({
+            errorClass: 'red',
+            ignore: [],
+            lang: 'vi',
+            rules: {
+                txtTitle: { required: true },
+                ddlAlbumId: { required: true },
+                txtImage: {
+                    required: true
+                }
+            }
+        });
+
+        $('#frmMulti').validate({
+            errorClass: 'red',
+            ignore: [],
+            lang: 'vi',
+            rules: {
+                ddlAlbumIdMulti: { required: true },
+                fileInputImageMulti: {
+                    required: true
+                }
+            }
+        });
 
         //todo: binding events to controls
         $('#ddlShowPage').on('change', function () {
@@ -34,8 +45,17 @@
 
         });
 
+        $("#btnCreateMulti").on('click', function () {
+            resetFormMulti();
+            $('#modal-add-multi').modal('show');
+        });
+
         $('#btnSelectImg').on('click', function () {
             $('#fileInputImage').click();
+        });
+
+        $('#btnSelectImg-Multi').on('click', function () {
+            $('#fileInputImage-Multi').click();
         });
 
         $("#fileInputImage").on('change', function () {
@@ -54,7 +74,40 @@
                 success: function (path) {
                     $('#txtImage').val(path);
                     lkd.notify('Upload image succesful!', 'success');
+                },
+                error: function () {
+                    lkd.notify('There was error uploading files!', 'error');
+                }
+            });
+        });
 
+        $("#fileInputImage-Multi").on('change', function () {
+            var fileUpload = $(this).get(0);
+            var files = fileUpload.files;
+            var data = new FormData();
+            var strImageUrlList = "";
+            for (var i = 0; i < files.length; i++) {
+                data.append(files[i].name, files[i]);
+            }
+            $.ajax({
+                type: "POST",
+                url: "/Admin/Upload/UploadMultiImage",
+                contentType: false,
+                processData: false,
+                data: data,
+                success: function (pathList) {
+                    $.each(pathList, function (i, item) {
+                        $('#filePathList').append(item);
+                        $('#filePathList').append("<br />");
+                        
+                        if (strImageUrlList == "") {
+                            strImageUrlList = item;
+                        }
+                        else
+                            strImageUrlList += "," + item;
+                    });
+                    $("#hidImageUrlList").val(strImageUrlList);
+                    lkd.notify('Upload image succesful!', 'success');
                 },
                 error: function () {
                     lkd.notify('There was error uploading files!', 'error');
@@ -75,13 +128,13 @@
                 },
                 success: function (response) {
                     var data = response;
-                    $('#hidIdM').val(data.Id);
-                    $('#txtTitleM').val(data.Title);
+                    $('#hidId').val(data.Id);
+                    $('#txtTitle').val(data.Title);
                     loadAlbums(data.ImageAlbumId);
 
                     $('#txtImage').val(data.ImageUrl);
 
-                    $('#ckStatusM').prop('checked', data.Status == 1);
+                    $('#ckStatus').prop('checked', data.Status == 1);
 
                     $('#modal-add-edit').modal('show');
                     lkd.stopLoading();
@@ -94,6 +147,116 @@
             });
         });
     }
+
+    $('#btnSave').on('click', function (e) {
+        if ($('#frmMaintainance').valid()) {
+            e.preventDefault();
+            var id = $('#hidId').val();
+            var title = $('#txtTitle').val();
+            var albumId = $('#ddlAlbumId').val();
+            var imageUrl = $('#txtImage').val();
+            var status = $('#ckStatus').prop('checked') == true ? 1 : 0;
+
+            $.ajax({
+                type: "POST",
+                url: "/Admin/Image/SaveEntity",
+                data: {
+                    Id: id,
+                    Title: title,
+                    ImageAlbumId: albumId,
+                    ImageUrl: imageUrl,
+                    Status: status
+                },
+                dataType: "json",
+                beforeSend: function () {
+                    lkd.startLoading();
+                },
+                success: function (response) {
+                    lkd.notify('Update image successful', 'success');
+                    $('#modal-add-edit').modal('hide');
+                    resetFormMaintainance();
+
+                    lkd.stopLoading();
+                    loadData(true);
+                },
+                error: function () {
+                    lkd.notify('Has an error in save image progress', 'error');
+                    lkd.stopLoading();
+                }
+            });
+            return false;
+        }
+    });
+
+    $('#btnSave-Multi').on('click', function (e) {
+        if ($('#frmAddMulti').valid()) {
+            e.preventDefault();
+            var images = [];
+            var image;
+            var arrImageUrl = $('#hidImageUrlList').val().split(',');
+            var albumId = $('#ddlAlbumId-Multi').val();
+            var status = $('#ckStatus-Multi').prop('checked') == true ? 1 : 0;
+            for (var i = 0; i < arrImageUrl.length; i++) {
+                image = {
+                    Title: "Title",
+                    ImageAlbumId: albumId,
+                    ImageUrl: arrImageUrl[i],
+                    Status: status
+                }
+                images.push(image);
+            }            
+
+            $.ajax({
+                type: "POST",
+                url: "/Admin/Image/SaveMulti",
+                data: {
+                    imageListVm: images
+                },
+                dataType: "json",
+                beforeSend: function () {
+                    lkd.startLoading();
+                },
+                success: function (response) {
+                    lkd.notify('Update image successful', 'success');
+                    $('#modal-add-multi').modal('hide');
+                    resetFormMulti();
+
+                    lkd.stopLoading();
+                    loadData(true);
+                },
+                error: function () {
+                    lkd.notify('Has an error in save image progress', 'error');
+                    lkd.stopLoading();
+                }
+            });
+            return false;
+        }
+    });
+
+    $('body').on('click', '.btn-delete', function (e) {
+        e.preventDefault();
+        var that = $(this).data('id');
+        lkd.confirm('Are you sure to delete?', function () {
+            $.ajax({
+                type: "POST",
+                url: "/Admin/Image/Delete",
+                data: { id: that },
+                dataType: "json",
+                beforeSend: function () {
+                    lkd.startLoading();
+                },
+                success: function (response) {
+                    lkd.notify('Delete successful', 'success');
+                    lkd.stopLoading();
+                    loadData();
+                },
+                error: function (status) {
+                    lkd.notify('Has an error in delete progress', 'error');
+                    lkd.stopLoading();
+                }
+            });
+        });
+    });
 
     function initDropDownAlbum(selectedId) {
         $.ajax({
@@ -122,13 +285,21 @@
     }
 
     function resetFormMaintainance() {
-        $('#hidIdM').val(0);
-        $('#txtTitleM').val('');
+        $('#hidId').val(0);
+        $('#txtTitle').val('');
         loadAlbums('');
 
         $('#txtImage').val('');
 
-        $('#ckStatusM').prop('checked', true);
+        $('#ckStatus').prop('checked', true);
+    }
+
+    function resetFormMulti() {
+        loadAlbums('');
+
+        $('#filePathList').html('');
+
+        $('#ckStatus-Multi').prop('checked', true);
     }
 
     function loadAlbums(selectedId) {
@@ -146,6 +317,7 @@
                         render += "<option value='" + item.Id + "'>" + item.Title + "</option>"
                 });
                 $('#ddlAlbumId').html(render);
+                $('#ddlAlbumId-Multi').html(render);
             },
             error: function (status) {
                 console.log(status);
@@ -174,7 +346,7 @@
                         Title: item.Title,
                         ImageUrl: item.ImageUrl,
                         AlbumId: item.ImageAlbum.Title,
-                        //CreatedDate: tedu.dateTimeFormatJson(item.DateCreated),
+                        CreatedDate: lkd.dateTimeFormatJson(item.CreatedDate),
                         Status: lkd.getStatus(item.Status)
                     });
                 });
