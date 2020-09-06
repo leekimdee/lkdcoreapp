@@ -12,22 +12,16 @@
             lang: 'vi',
             rules: {
                 txtTitle: { required: true },
-                ddlAlbumId: { required: true },
-                txtImage: {
-                    required: true
-                }
+                ddlAlbumId: { required: true }
             }
         });
 
-        $('#frmMulti').validate({
+        $('#frmAddMulti').validate({
             errorClass: 'red',
             ignore: [],
             lang: 'vi',
             rules: {
-                ddlAlbumIdMulti: { required: true },
-                fileInputImageMulti: {
-                    required: true
-                }
+                ddlAlbumIdMulti: { required: true }
             }
         });
 
