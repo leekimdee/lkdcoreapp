@@ -81,6 +81,11 @@ namespace LkdCoreApp.Application.Implementations
             return Mapper.Map<Image, ImageViewModel>(_imageRepository.FindById(id));
         }
 
+        public List<ImageViewModel> GetImagesByAlbumId(int albumId)
+        {
+            return _imageRepository.FindAll(f => f.ImageAlbumId == albumId).ProjectTo<ImageViewModel>().ToList();
+        }
+
         public void Save()
         {
             _unitOfWork.Commit();

@@ -32,18 +32,16 @@
 <h1>Thư viện hình</h1>
 
 <div class="row">
-    <div class="col-md-1">
-        <label class="control-label">
+    <div class="col-md-1 align-middle">
             Album
-        </label>
     </div>
-    <div class="col-md-11">
+    <div class="col-md-5">
         @Html.DropDownList("ImageAlbumId", new SelectList(ViewBag.ImageAlbums, "Id", "Title", ""), new { @class = "form-control" })
     </div>
 </div>
 
 <div class="row">
-    <div id="lightgallery">
+    <div class="col-md-12" id="lightgallery">
 
     </div>
 </div>

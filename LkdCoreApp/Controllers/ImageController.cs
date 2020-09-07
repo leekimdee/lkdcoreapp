@@ -25,10 +25,10 @@ namespace LkdCoreApp.Controllers
         [HttpGet]
         public IActionResult GetImagesByAlbum(int albumId)
         {
-            var imageAlbum = _imageAlbumService.GetByIdWithIncludeObject(albumId);
-            var images = imageAlbum.Images;
-            var imgtest = new List<ImageViewModel>();
-            return new OkObjectResult(imgtest);
+            //var imageAlbum = _imageAlbumService.GetByIdWithIncludeObject(albumId);
+            var images = _imageService.GetImagesByAlbumId(albumId);
+
+            return new OkObjectResult(images);
         }
     }
 }

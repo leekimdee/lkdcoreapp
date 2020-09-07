@@ -20,6 +20,8 @@ namespace LkdCoreApp.Application.Interfaces
 
         ImageViewModel GetById(int id);
 
+        List<ImageViewModel> GetImagesByAlbumId(int albumId);
+
         void Save();
     }
 }
