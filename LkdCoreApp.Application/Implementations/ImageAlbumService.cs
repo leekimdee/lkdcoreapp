@@ -86,6 +86,11 @@ namespace LkdCoreApp.Application.Implementations
             return Mapper.Map<ImageAlbum, ImageAlbumViewModel>(_imageAlbumRepository.FindById(id));
         }
 
+        public ImageAlbumViewModel GetByIdWithIncludeObject(int id)
+        {
+            return Mapper.Map<ImageAlbum, ImageAlbumViewModel>(_imageAlbumRepository.FindById(id, i => i.Images));
+        }
+
         public void ReOrder(int sourceId, int targetId)
         {
             throw new NotImplementedException();

@@ -21,6 +21,8 @@ namespace LkdCoreApp.Application.Interfaces
 
         ImageAlbumViewModel GetById(int id);
 
+        ImageAlbumViewModel GetByIdWithIncludeObject(int id);
+
         void ReOrder(int sourceId, int targetId);
 
         void Save();
