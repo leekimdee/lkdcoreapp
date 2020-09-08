@@ -165,6 +165,7 @@
     function resetFormMaintainance() {
         $('#hidId').val(0);
         $('#txtTitle').val('');
+        $('#txtSortOrder').val('');
         $('#ckStatus').prop('checked', true);
     }
 }
