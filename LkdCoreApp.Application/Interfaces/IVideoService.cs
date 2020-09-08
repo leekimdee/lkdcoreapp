@@ -1,4 +1,5 @@
 ﻿using LkdCoreApp.Application.ViewModels;
+using LkdCoreApp.Utilities.Dtos;
 using System.Collections.Generic;
 
 namespace LkdCoreApp.Application.Interfaces
@@ -14,6 +15,8 @@ namespace LkdCoreApp.Application.Interfaces
         List<VideoViewModel> GetAll();
 
         List<VideoViewModel> GetAll(string keyword);
+
+        PagedResult<VideoViewModel> GetAllPaging(string keyword, int page, int pageSize);
 
         VideoViewModel GetById(int id);
 

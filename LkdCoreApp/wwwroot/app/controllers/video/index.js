@@ -1,4 +1,4 @@
-﻿var imageAlbumController = function () {
+﻿var videoController = function () {
     this.initialize = function () {
         loadData();
         registerEvents();
@@ -11,7 +11,7 @@
             lang: 'vi',
             rules: {
                 txtTitle: { required: true },
-                txtSortOrder: { number: true }
+                txtVideoUrl: { number: true }
             }
         });
 
@@ -33,7 +33,7 @@
             var that = $(this).data('id');
             $.ajax({
                 type: "GET",
-                url: "/Admin/ImageAlbum/GetById",
+                url: "/Admin/Video/GetById",
                 data: { id: that },
                 dataType: "json",
                 beforeSend: function () {
@@ -43,7 +43,7 @@
                     var data = response;
                     $('#hidId').val(data.Id);
                     $('#txtTitle').val(data.Title);
-                    $('#txtSortOrder').val(data.SortOrder);
+                    $('#txtVideoUrl').val(data.VideoUrl);
                     $('#ckStatus').prop('checked', data.Status == 1);
 
                     $('#modal-add-edit').modal('show');
@@ -62,16 +62,16 @@
                 e.preventDefault();
                 var id = $('#hidId').val();
                 var title = $('#txtTitle').val();
-                var sortOrder = $('#txtSortOrder').val();
+                var videoUrl = $('#txtVideoUrl').val();
                 var status = $('#ckStatus').prop('checked') == true ? 1 : 0;
 
                 $.ajax({
                     type: "POST",
-                    url: "/Admin/ImageAlbum/SaveEntity",
+                    url: "/Admin/Video/SaveEntity",
                     data: {
                         Id: id,
                         Title: title,
-                        SortOrder: sortOrder,
+                        VideoUrl: videoUrl,
                         Status: status
                     },
                     dataType: "json",
@@ -79,7 +79,7 @@
                         lkd.startLoading();
                     },
                     success: function (response) {
-                        lkd.notify('Update album successful', 'success');
+                        lkd.notify('Update video successful', 'success');
                         $('#modal-add-edit').modal('hide');
                         resetFormMaintainance();
 
@@ -87,7 +87,7 @@
                         loadData(true);
                     },
                     error: function () {
-                        lkd.notify('Has an error in save album progress', 'error');
+                        lkd.notify('Has an error in save video progress', 'error');
                         lkd.stopLoading();
                     }
                 });
@@ -101,7 +101,7 @@
             lkd.confirm('Are you sure to delete?', function () {
                 $.ajax({
                     type: "POST",
-                    url: "/Admin/ImageAlbum/Delete",
+                    url: "/Admin/Video/Delete",
                     data: { id: that },
                     dataType: "json",
                     beforeSend: function () {
@@ -132,14 +132,14 @@
                 page: lkd.configs.pageIndex,
                 pageSize: lkd.configs.pageSize
             },
-            url: '/admin/imagealbum/GetAllPaging',
+            url: '/Admin/Video/GetAllPaging',
             dataType: 'json',
             success: function (response) {
                 $.each(response.Results, function (i, item) {
                     render += Mustache.render(template, {
                         Id: item.Id,
                         Title: item.Title,
-                        SortOrder: item.SortOrder,
+                        VideoUrl: item.VideoUrl,
                         CreatedDate: lkd.dateTimeFormatJson(item.CreatedDate),
                         Status: lkd.getStatus(item.Status)
                     });

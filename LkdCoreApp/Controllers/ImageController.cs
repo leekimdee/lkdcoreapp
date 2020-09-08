@@ -1,7 +1,6 @@
 ﻿using LkdCoreApp.Application.Interfaces;
-using LkdCoreApp.Application.ViewModels;
 using Microsoft.AspNetCore.Mvc;
-using System.Collections.Generic;
+using System.Linq;
 
 namespace LkdCoreApp.Controllers
 {
@@ -26,6 +25,7 @@ namespace LkdCoreApp.Controllers
         public IActionResult GetImagesByAlbum(int albumId)
         {
             //var imageAlbum = _imageAlbumService.GetByIdWithIncludeObject(albumId);
+            //var images = imageAlbum.Images.ToList();
             var images = _imageService.GetImagesByAlbumId(albumId);
 
             return new OkObjectResult(images);

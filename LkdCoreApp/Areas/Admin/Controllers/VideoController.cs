@@ -1,4 +1,5 @@
-﻿using LkdCoreApp.Application.Interfaces;
+﻿using LkdCoreApp.Application.Implementations;
+using LkdCoreApp.Application.Interfaces;
 using LkdCoreApp.Application.ViewModels;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
@@ -7,13 +8,13 @@ using System.Linq;
 
 namespace LkdCoreApp.Areas.Admin.Controllers
 {
-    public class ImageAlbumController : BaseController
+    public class VideoController : BaseController
     {
-        private IImageAlbumService _imageAlbumService;
+        private IVideoService _videoService;
 
-        public ImageAlbumController(IImageAlbumService imageAlbumService)
+        public VideoController(IVideoService videoService)
         {
-            _imageAlbumService = imageAlbumService;
+            _videoService = videoService;
         }
 
         public IActionResult Index()
@@ -26,19 +27,19 @@ namespace LkdCoreApp.Areas.Admin.Controllers
         [HttpGet]
         public IActionResult GetAll()
         {
-            var model = _imageAlbumService.GetAll();
+            var model = _videoService.GetAll();
             return new OkObjectResult(model);
         }
 
         [HttpGet]
         public IActionResult GetAllPaging(string keyword, int page, int pageSize)
         {
-            var model = _imageAlbumService.GetAllPaging(keyword, page, pageSize);
+            var model = _videoService.GetAllPaging(keyword, page, pageSize);
             return new OkObjectResult(model);
         }
 
         [HttpPost]
-        public IActionResult SaveEntity(ImageAlbumViewModel imageAlbumVm)
+        public IActionResult SaveEntity(VideoViewModel videoVm)
         {
             if (!ModelState.IsValid)
             {
@@ -47,23 +48,23 @@ namespace LkdCoreApp.Areas.Admin.Controllers
             }
             else
             {
-                if (imageAlbumVm.Id == 0)
+                if (videoVm.Id == 0)
                 {
-                    _imageAlbumService.Add(imageAlbumVm);
+                    _videoService.Add(videoVm);
                 }
                 else
                 {
-                    _imageAlbumService.Update(imageAlbumVm);
+                    _videoService.Update(videoVm);
                 }
-                _imageAlbumService.Save();
-                return new OkObjectResult(imageAlbumVm);
+                _videoService.Save();
+                return new OkObjectResult(videoVm);
             }
         }
 
         [HttpGet]
         public IActionResult GetById(int id)
         {
-            var model = _imageAlbumService.GetById(id);
+            var model = _videoService.GetById(id);
 
             return new OkObjectResult(model);
         }
@@ -77,8 +78,8 @@ namespace LkdCoreApp.Areas.Admin.Controllers
             }
             else
             {
-                _imageAlbumService.Delete(id);
-                _imageAlbumService.Save();
+                _videoService.Delete(id);
+                _videoService.Save();
 
                 return new OkObjectResult(id);
             }

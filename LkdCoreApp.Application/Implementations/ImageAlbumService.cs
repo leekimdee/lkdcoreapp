@@ -103,7 +103,8 @@ namespace LkdCoreApp.Application.Implementations
 
         public void Update(ImageAlbumViewModel imageAlbumVm)
         {
-            throw new NotImplementedException();
+            var imageAlbum = Mapper.Map<ImageAlbumViewModel, ImageAlbum>(imageAlbumVm);
+            _imageAlbumRepository.Update(imageAlbum);
         }
     }
 }

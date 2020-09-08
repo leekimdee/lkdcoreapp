@@ -1,17 +1,15 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using LkdCoreApp.Application.Interfaces;
+﻿using LkdCoreApp.Application.Interfaces;
 using LkdCoreApp.Application.ViewModels;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace LkdCoreApp.Areas.Admin.Controllers
 {
     public class ImageController : BaseController
     {
-        IImageService _imageService;
+        private IImageService _imageService;
 
         public ImageController(IImageService imageService)
         {
@@ -24,6 +22,7 @@ namespace LkdCoreApp.Areas.Admin.Controllers
         }
 
         #region AJAX API
+
         [HttpPost]
         public IActionResult SaveEntity(ImageViewModel imageVm)
         {
@@ -96,6 +95,7 @@ namespace LkdCoreApp.Areas.Admin.Controllers
                 return new OkObjectResult(id);
             }
         }
-        #endregion
+
+        #endregion AJAX API
     }
 }

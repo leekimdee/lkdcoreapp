@@ -3,8 +3,10 @@ using AutoMapper.QueryableExtensions;
 using LkdCoreApp.Application.Interfaces;
 using LkdCoreApp.Application.ViewModels;
 using LkdCoreApp.Data.Entities;
+using LkdCoreApp.Data.Enums;
 using LkdCoreApp.Data.IRepositories;
 using LkdCoreApp.Infrastructure.Interfaces;
+using LkdCoreApp.Utilities.Dtos;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -51,6 +53,29 @@ namespace LkdCoreApp.Application.Implementations
                     .ToList();
         }
 
+        public PagedResult<VideoViewModel> GetAllPaging(string keyword, int page, int pageSize)
+        {
+            var query = _videoRepository.FindAll(x => x.Status == Status.Active);
+            if (!string.IsNullOrEmpty(keyword))
+                query = query.Where(x => x.Title.Contains(keyword));
+
+            int totalRow = query.Count();
+
+            query = query.OrderByDescending(x => x.CreatedDate)
+                .Skip((page - 1) * pageSize).Take(pageSize);
+
+            var data = query.ProjectTo<VideoViewModel>().ToList();
+
+            var paginationSet = new PagedResult<VideoViewModel>()
+            {
+                Results = data,
+                CurrentPage = page,
+                RowCount = totalRow,
+                PageSize = pageSize
+            };
+            return paginationSet;
+        }
+
         public VideoViewModel GetById(int id)
         {
             return Mapper.Map<Video, VideoViewModel>(_videoRepository.FindById(id));
@@ -63,7 +88,8 @@ namespace LkdCoreApp.Application.Implementations
 
         public void Update(VideoViewModel videoVm)
         {
-            throw new NotImplementedException();
+            var video = Mapper.Map<VideoViewModel, Video>(videoVm);
+            _videoRepository.Update(video);
         }
     }
 }

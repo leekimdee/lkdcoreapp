@@ -86,9 +86,11 @@ namespace LkdCoreApp
 
             services.AddTransient<IImageAlbumRepository, ImageAlbumRepository>();
             services.AddTransient<IImageRepository, ImageRepository>();
+            services.AddTransient<IVideoRepository, VideoRepository>();
 
             services.AddTransient<IImageAlbumService, ImageAlbumService>();
             services.AddTransient<IImageService, ImageService>();
+            services.AddTransient<IVideoService, VideoService>();
 
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
         }

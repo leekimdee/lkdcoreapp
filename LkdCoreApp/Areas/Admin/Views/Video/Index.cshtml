@@ -2,21 +2,21 @@
     ViewData["Title"] = "Index";
 }
 @section Scripts{
-    <script src="~/app/controllers/imagealbum/index.js"></script>
+    <script src="~/app/controllers/video/index.js"></script>
     <script>
-        var album = new imageAlbumController();
-        album.initialize();
+        var video = new videoController();
+        video.initialize();
     </script>
 }
 <!-- Content Header (Page header) -->
 <section class="content-header">
     <h1>
-        Hình ảnh
-        <small>Danh sách album</small>
+        Video
+        <small>Danh sách video</small>
     </h1>
     <ol class="breadcrumb">
         <li><a href="#"><i class="fa fa-dashboard"></i> Trang chủ</a></li>
-        <li class="active">Danh sách album</li>
+        <li class="active">Danh sách video</li>
     </ol>
 </section>
 
@@ -26,7 +26,7 @@
         <div class="col-md-12">
             <div class="box">
                 <div class="box-header with-border">
-                    <h3 class="box-title">Tất cả Album</h3>
+                    <h3 class="box-title">Tất cả Video</h3>
                     <div class="box-tools">
                         <button id="btnCreate" class="btn btn-default"><i class="fa fa-plus"></i>Thêm mới</button>
                     </div>
@@ -38,7 +38,7 @@
                             <tr>
                                 <th style="width: 100px">#</th>
                                 <th>Tiêu đề</th>
-                                <th>Thứ tự</th>
+                                <th>Đường dẫn</th>
                                 <th>Ngày tạo</th>
                                 <th style="width: 40px">Trạng thái</th>
                             </tr>
@@ -47,21 +47,10 @@
                     </table>
                 </div>
                 <!-- /.box-body -->
-                @*<div class="box-footer clearfix">
-            <ul class="pagination pagination-sm no-margin pull-right">
-                <li><a href="#">&laquo;</a></li>
-                <li><a href="#">1</a></li>
-                <li><a href="#">2</a></li>
-                <li><a href="#">3</a></li>
-                <li><a href="#">&raquo;</a></li>
-            </ul>
-        </div>*@
                 <!--Pagination-->
                 <div id="pagingSection" class="box-footer">
-                    
-                </div>
-                @*@Html.Partial("/Areas/Admin/Views/Shared/_PagingPartial.cshtml")*@
 
+                </div>
             </div>
         </div>
     </div>
@@ -74,7 +63,7 @@
             <button class="btn btn-danger btn-sm btn-delete" data-id="{{Id}}"><i class="fa fa-trash"></i></button>
         </th>
         <td>{{Title}}</td>
-        <td>{{SortOrder}}</td>
+        <td>{{VideoUrl}}</td>
         <td>{{CreatedDate}}</td>
         <td>{{{Status}}}</td>
     </tr>

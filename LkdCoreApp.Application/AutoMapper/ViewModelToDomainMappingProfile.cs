@@ -13,6 +13,9 @@ namespace LkdCoreApp.Application.AutoMapper
 
             CreateMap<ImageViewModel, Image>()
                 .ConstructUsing(i => new Image(i.Title, i.ImageUrl, i.ImageAlbumId, i.Status));
+
+            CreateMap<VideoViewModel, Video>()
+                .ConstructUsing(i => new Video(i.Title, i.VideoUrl, i.Status));
         }
     }
 }
