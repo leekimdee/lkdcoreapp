@@ -11,6 +11,7 @@ using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity.UI;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
@@ -48,9 +49,9 @@ namespace LkdCoreApp
                 .AddEntityFrameworkStores<AppDbContext>()
                 .AddDefaultTokenProviders();
 
-            //services.AddDefaultIdentity<AppUser, AppRole>()
+            //services.AddDefaultIdentity<IdentityUser>()
             //    .AddDefaultUI(UIFramework.Bootstrap4)
-            //    .AddEntityFrameworkStores<ApplicationDbContext>();
+            //    .AddEntityFrameworkStores<TestAppDbContext>();
 
             // Configure Identity
             services.Configure<IdentityOptions>(options =>
@@ -72,8 +73,8 @@ namespace LkdCoreApp
 
             services.AddAutoMapper();
             // Add application services.
-            services.AddScoped<UserManager<AppUser>, UserManager<AppUser>>();
-            services.AddScoped<RoleManager<AppRole>, RoleManager<AppRole>>();
+            //services.AddScoped<UserManager<AppUser>, UserManager<AppUser>>();
+            //services.AddScoped<RoleManager<AppRole>, RoleManager<AppRole>>();
 
             services.AddSingleton(Mapper.Configuration);
             services.AddScoped<IMapper>(sp => new Mapper(sp.GetRequiredService<AutoMapper.IConfigurationProvider>(), sp.GetService));
@@ -82,7 +83,11 @@ namespace LkdCoreApp
             services.AddTransient<IUnitOfWork, EFUnitOfWork>();
             services.AddTransient<DbInitializer>();
 
-            services.AddMvc().AddJsonOptions(options => options.SerializerSettings.ContractResolver = new DefaultContractResolver());
+            services.AddMvc().AddJsonOptions(options =>
+            {
+                options.SerializerSettings.ContractResolver = new DefaultContractResolver();
+                options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore;
+            });
 
             services.AddTransient<IImageAlbumRepository, ImageAlbumRepository>();
             services.AddTransient<IImageRepository, ImageRepository>();

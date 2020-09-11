@@ -9,17 +9,17 @@ namespace LkdCoreApp.Data.EF
 {
     public class TestEFUnitOfWork
     {
-        private readonly AppDbContext _context;
+        private readonly TestAppDbContext _context;
 
         public TestEFUnitOfWork()
         {
             IConfiguration configuration = new ConfigurationBuilder()
                 .SetBasePath(Directory.GetCurrentDirectory())
                 .AddJsonFile("appsettings.json").Build();
-            var builder = new DbContextOptionsBuilder<AppDbContext>();
+            var builder = new DbContextOptionsBuilder<TestAppDbContext>();
             var connectionString = configuration.GetConnectionString("DefaultConnection");
             builder.UseSqlServer(connectionString);
-            _context = new AppDbContext(builder.Options);
+            _context = new TestAppDbContext(builder.Options);
         }
 
         public void Commit()
