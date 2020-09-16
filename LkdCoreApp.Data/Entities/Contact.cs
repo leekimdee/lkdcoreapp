@@ -24,11 +24,9 @@ namespace LkdCoreApp.Data.Entities
         [StringLength(250)]
         public string Address { set; get; }
 
+        public string EmbedCode { set; get; }
+
         public string Other { set; get; }
-
-        public double? Lat { set; get; }
-
-        public double? Lng { set; get; }
 
         public Status Status { set; get; }
     }
