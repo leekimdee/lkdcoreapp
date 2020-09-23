@@ -1,4 +1,6 @@
-﻿using LkdCoreApp.Data.Entities;
+﻿using LkdCoreApp.Data.EF.Configurations;
+using LkdCoreApp.Data.EF.Extensions;
+using LkdCoreApp.Data.Entities;
 using LkdCoreApp.Data.Interfaces;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
@@ -28,6 +30,7 @@ namespace LkdCoreApp.Data.EF
         public DbSet<Contact> Contacts { get; set; }
         public DbSet<Feedback> Feedbacks { get; set; }
         public DbSet<Function> Functions { get; set; }
+        public DbSet<Permission> Permissions { get; set; }
 
         protected override void OnModelCreating(ModelBuilder builder)
         {
@@ -51,7 +54,7 @@ namespace LkdCoreApp.Data.EF
             //builder.AddConfiguration(new TagConfiguration());
             //builder.AddConfiguration(new BlogTagConfiguration());
             //builder.AddConfiguration(new ContactDetailConfiguration());
-            //builder.AddConfiguration(new FooterConfiguration());
+            builder.AddConfiguration(new FunctionConfiguration());
             //builder.AddConfiguration(new PageConfiguration());
             //builder.AddConfiguration(new FooterConfiguration());
             //builder.AddConfiguration(new ProductTagConfiguration());
